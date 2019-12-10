@@ -13,15 +13,17 @@
 <body>
     <div id='app'></div>
     <script type='text/babel'>
+        const cardData = {
+            question: "You may know that React was created at _________.",
+            hint: "This company's site is known for being written in PHP."
+        };
         const App = function() {
             return (
                 <div className='App'>
                     <h1 className='title'>Flashback</h1>
                     <p className="sub-title">An interactive flashcard app.</p>
                     <div className="card-list">
-                        <Card question="You may know that React was created at _________."
-                                hint="This company's site is known for being written in PHP."
-                        />
+                        <Card {...cardData}/> {/* THIS IS HOW TO PASS A JSON AS INDIV FOR PROP */}
                     </div>
                 </div>);
         };
