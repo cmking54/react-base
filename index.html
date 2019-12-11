@@ -15,19 +15,54 @@
     <div id='app'></div>
     <script type='text/babel'>
         const App = function() {
-            const [cardData, updateCardData] = React.useState(importedFlashCardDataFile);
-
+            const [cardData, updateCardData] = React.useState(
+                importedFlashCardDataFile.map(
+                            (indv_data, index) => 
+                                <Card {...Object.assign({key: index}, indv_data.front, indv_data.back)} />
+                            ) 
+            );
+            React.useEffect(() => {
+                console.log("Effect Test");
+                console.log(cardData.map(x => x.key));
+            });
             return (
                 <div className='App'>
                     <h1 className='title'>Flashback</h1>
                     <p className="sub-title">An interactive flashcard app.</p>
                     <div className="card-list">
                         {/* second parameter on map is always index */}
-                        {cardData.map(
-                            (indv_data, index) => 
-                                <Card {...Object.assign({key: index}, indv_data.front, indv_data.back)} />
-                            ) 
-                        }
+                        { cardData }
+                    </div>
+                    <div className='buttons'>
+                        <button onClick={() => {
+                            console.log("Back");
+                            cardData.unshift(cardData.pop()); // change despite being read only
+                            updateCardData(cardData.map(x => x)); // updates only if new array
+                            
+                        }}>
+                            &lt;
+                        </button>
+                        <button onClick={() => {
+                            console.log("Shuffle");
+                            // Fisher-Yates Algo
+                            let array = cardData, swap_pointer = array.length, temp_space, remaining;
+                            while (swap_pointer) {
+                                remaining = Math.floor(Math.random() * swap_pointer--);
+                                temp_space = array[swap_pointer];
+                                array[swap_pointer] = array[remaining];
+                                array[remaining] = temp_space;
+                            }
+                            updateCardData(array.map(x => x)); // updates only if new array
+                        }}>
+                            s
+                        </button>
+                        <button onClick={() => {
+                            console.log("Forward");
+                            cardData.push(cardData.shift()); // change despite being read only
+                            updateCardData(cardData.map(x => x)); // updates only if new array
+                        }}>
+                            &gt;
+                        </button>
                     </div>
                 </div>);
         };
