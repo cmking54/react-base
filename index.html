@@ -6,24 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Flashback</title>
     <script src="https://unpkg.com/@babel/standalone@7.2.5/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.0.0/umd/react.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.0.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script src="js/flashcardData.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css"></link>
 </head>
 <body>
     <div id='app'></div>
     <script type='text/babel'>
-        const cardData = importedFlashCardDataFile;
         const App = function() {
+            const [cardData, updateCardData] = React.useState(importedFlashCardDataFile);
+
             return (
                 <div className='App'>
                     <h1 className='title'>Flashback</h1>
                     <p className="sub-title">An interactive flashcard app.</p>
                     <div className="card-list">
+                        {/* second parameter on map is always index */}
                         {cardData.map(
-                            (indv_data) => 
-                                <Card {...Object.assign({key: indv_data.back.answer}, indv_data.front, indv_data.back)} />
+                            (indv_data, index) => 
+                                <Card {...Object.assign({key: index}, indv_data.front, indv_data.back)} />
                             ) 
                         }
                     </div>
